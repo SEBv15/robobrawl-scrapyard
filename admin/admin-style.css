@@ -1,0 +1,196 @@
+div.sya-content {
+    position: relative;
+}
+
+div.sya-block {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    left: 0;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+div.sya-blockuser {
+    width: 10em;
+    margin: auto;
+    margin-top: 50vh;
+    transform: translateY(-50px);
+    background-color: white;
+    padding: 16px;
+    text-align: center;
+}
+
+div.sya_bot {
+    width: 500px;
+    max-width: 90%;
+    background-color: white;
+    border-radius: 3px;
+    margin: 8px 0;
+    display: flex;
+    flex-direction: row;
+    height: 64px;
+    cursor: pointer;
+    user-select: none; 
+}
+div.sya_bot img {
+    width: 64px;
+    height: 64px;
+}
+div.sya_bot span.sya_title {
+    flex: 1;
+    line-height: 64px;
+    font-size: 1.1em;
+    padding: 0 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+}
+div.sya_bot .sya_cardcode {
+    user-select: all; 
+    font-family: monospace;
+    background-color: lightgrey;
+    border-radius: 2px;
+    width: 164px;
+    line-height: 64px;
+    text-align: center;
+    cursor: text;
+    margin: 0;
+}
+div.sya_bot .sya_cardcode span {
+    font-size: 0;
+}
+form#sya-form label, form#sya-form span.sya-label {
+    display: block;
+    font-weight: bold;
+    margin-top: 8px;
+}
+form#sya-form input#syaf-name {
+    width: 500px;
+    max-width: 90%;    
+}
+form#sya-form textarea {
+    width: 500px;
+    max-width: 90%;
+    min-height: 10em;
+}
+form#sya-form div.sya-photos {
+    overflow: auto;
+    white-space: nowrap;
+}
+form#sya-form div.sya-image {
+    display: inline-block;
+    position: relative;
+    margin: 4px;
+}
+form#sya-form div.sya-image:hover span.sya-del-img {
+    display: block;
+}
+form#sya-form span.sya-del-img {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background-color: red;
+    color: white;
+    border-radius: 9px;
+    width: 18px;
+    height: 18px;
+    text-align: center;
+    font-weight: bold;
+    font-family: monospace;
+    display: none;
+    cursor: pointer;
+}
+form#sya-form div.sya-attribute {
+    background-color: rgba(255,255,255,0.7);
+    width: 500px;
+    max-width: 90%;
+    display: flex;
+    flex-direction: row;
+    padding: 4px;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+    margin: 4px 0;
+    box-sizing: border-box;
+}
+form#sya-form div.sya-attribute span {
+    flex: 1;
+    line-height: 28px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    padding: 0 4px;
+    
+}
+form#sya-form div.sya-attribute input {
+    flex: 1;
+}
+form#sya-form div.sya-attribute button {
+    margin-left: 8px;
+}
+form#sya-form div.sya-attribute button:hover {
+    background-color: rgb(216, 67, 67);
+    color: white;
+    border-color: rgb(151, 90, 90);
+}
+form#sya-form div.sya-add-attribute {
+    background-color: rgba(255,255,255,0.7);
+    width: 500px;
+    max-width: 90%;
+    padding: 4px;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+    margin: 4px 0;
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+}
+form#sya-form div.sya-add-attribute input[type=text] {
+    flex: 1;
+}
+form#sya-form div.sya_autocomplete {
+    position: relative;
+} 
+.autocomplete-items {
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    border-bottom: none;
+    border-top: none;
+    z-index: 99;
+    /*position the autocomplete items to be the same width as the container:*/
+    top: 100%;
+    left: 0;
+    right: 0;
+}
+.autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #fff;
+    border-bottom: 1px solid #d4d4d4;
+}
+.autocomplete-items div:hover {
+    /*when hovering an item:*/
+    background-color: #e9e9e9;
+}
+.autocomplete-active {
+    /*when navigating through the items using the arrow keys:*/
+    background-color: DodgerBlue !important;
+    color: #ffffff;
+}
+
+div.sya-buttons {
+    width: 500px;
+    max-width: 90%;   
+    display: block;
+    margin-top: 8px;
+    display: flex;
+    flex-direction: row;
+}
+/*div.sya-buttons button {
+}*/
+div.sya-buttons div.sya-spacer {
+    flex: 1;
+}
+/*form#sya-form input.sya-submit {
+
+}*/

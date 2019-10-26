@@ -1,0 +1,57 @@
+div.sy_card {
+    width: 256px; 
+    background-color: #fff; 
+    border-radius: 3px; 
+    box-shadow: 0 2px 4px 2px rgba(255,255,255,0.3); 
+    overflow: hidden;
+    transition: transform 0.2s ease-out;
+    margin: 16px;
+    position: relative;
+}
+
+div.sy_card:hover {
+    transform: translateY(-3px);
+}
+
+div.sy_card div.sy_image {
+    width: 256px; 
+    height: 256px; 
+    background-position: center; 
+    background-size: cover; 
+    opacity: 0.5;
+}
+
+div.sy_card span.sy_title {
+    text-align: center;
+    display: block;
+    font-weight: normal;
+    top: 50%;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    transform: translateY(-50%);
+    color: black;
+    text-shadow: 0 0 50px white;
+    font-size: 1.2em;
+}
+div.sy_card_grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-right: auto !important;
+    margin-left: auto !important;
+}
+div#autocomplete-list {
+    background-color: black;
+    position: absolute;
+    z-index: 199;
+    width: 100%;
+    cursor: pointer;
+}
+div#autocomplete-list div {
+    padding: 2px 8px;
+    border-bottom: 1px solid #222;
+}
+div#autocomplete-list div:hover {
+    background-color: #222;
+}

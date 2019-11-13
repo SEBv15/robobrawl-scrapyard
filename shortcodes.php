@@ -1,14 +1,16 @@
 <?php
 function sy_shortcodes_init() {
+    // Wrapper for bot cards to properly align them
     function sy_cards($atts, $content = null) {
         return '<div class="sy_card_grid">' . do_shortcode($content) . '</div>';
     }
-
+    // A simple search bar that hides all sy_cards on the current page if they don't match the search
     function sy_search($atts) {
         ?>
         <script type="text/javascript">            
             jQuery(document).ready(function($) {
 
+                // Very ugly solution but it works
                 <?php echo file_get_contents("autocomplete.js", __FILE__); ?>
 
                 $.get("/wp-json/scrapyard/v1/types", function(res) {
@@ -17,6 +19,7 @@ function sy_shortcodes_init() {
                 $("input.scrapyard-search").on("input propertychange", function() {
                     var search = $(this).val().toLowerCase()
                     $("div.sy_card").each(function() {
+                        // Check if search query exists in either the bot's name, description, or it's type
                         var found = false;
                         if ($(this).attr("name").toLowerCase().indexOf(search) >= 0) {
                             found = true
@@ -40,7 +43,7 @@ function sy_shortcodes_init() {
         $out .= '</div>';
         return $out;
     }
-
+    // A preview and link to a bot
     function sy_card($atts) {
         $atts = shortcode_atts(
             [
@@ -49,19 +52,26 @@ function sy_shortcodes_init() {
         );
 
         $out = "";
-
+        
+        // Don't do anything if no bot provided
         if(!isset($atts["id"]) || $atts["id"] == "") {
             return "";
         }
 
-
         $bot = scrapyard_get_item($atts['id']);
+        // Stop if the bot doesn't exist
+        if (empty($bot)) {
+            return "";
+        }
+
+        // If no images provided use an empty url
         if (count($bot->images) == 0) {
-            $img_url = wp_get_attachment_url(0);
+            $img_url = "";
         } else {
             $img_url = wp_get_attachment_url( $bot->images[0]->image_id );
         }
 
+        // Get the bot's type (Vertical Spinner, Horizontal Spinner, etc) for the search bar
         $type = "";
         foreach($bot->attributes as $struct) {
             if ("type" == strtolower($struct->name)) {

@@ -1,6 +1,6 @@
 jQuery(function() {
     var $ = jQuery;
-    console.log("RUNNING")
+    // The Bot Images Slideshow
     $(".syb-gallery").slick({
         dots: true,
         infinite: true,

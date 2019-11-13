@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * Creates new scrapyard item/bot.
+ * 
+ * @param String $name The name of the new bot
+ * @param String $description Description of the new bot
+ * @return Integer MYSQL id of the bot (pretty much useless)
+ */
 function scrapyard_add_item($name, $description = "") {
     global $wpdb;
 
@@ -17,6 +23,11 @@ function scrapyard_add_item($name, $description = "") {
 
     return $wpdb->insert_id;
 }
+/**
+ * Delete item/bot.
+ * 
+ * @param Integer $item_id Id of the bot to delete
+ */
 function scrapyard_delete_item($item_id) {
     global $wpdb;
 
@@ -35,7 +46,14 @@ function scrapyard_delete_item($item_id) {
     ));
 }
 
-// submit null when not changed
+/**
+ * Edit item/bot.
+ * 
+ * @param Integer $item_id The id of the bot to edit
+ * @param String $name New name (null if not changed)
+ * @param String $description New description (null if unchanged)
+ * @param String $extra_html The extra html (null if unchanged)
+ */
 function scrapyard_edit_item($item_id, $name=null, $description=null, $extra_html=null) {
     global $wpdb;
 
@@ -58,6 +76,14 @@ function scrapyard_edit_item($item_id, $name=null, $description=null, $extra_htm
     ));
 }
 
+/**
+ * Insert or Edit bot attribute.
+ * 
+ * @param Integer $item_id The id of the bot the attribute belongs to
+ * @param String $name The name of the attribute
+ * @param String $value The (new) value of the attribute
+ * @return Integer|Null If new attribute, the MYSQL id of the attribute
+ */
 function scrapyard_upsert_attr($item_id, $name, $value) {
     global $wpdb;
     $botattributes_table = $wpdb->prefix . 'scrapyard_botattributes';
@@ -70,6 +96,7 @@ function scrapyard_upsert_attr($item_id, $name, $value) {
             'value' => $value,
             'item_id' => $item_id
         ));
+        return $wpdb->insert_id;
     } else {
         $wpdb->update($botattributes_table,array(
             'value' => $value
@@ -78,10 +105,14 @@ function scrapyard_upsert_attr($item_id, $name, $value) {
             'item_id' => $item_id
         ));
     }
-
-    return $wpdb->insert_id;
 }
 
+/**
+ * Delete bot attribute.
+ * 
+ * @param Integer $item_id The id of the bot the attribute belongs to
+ * @param String $name The name of the attribute to delete
+ */
 function scrapyard_delete_attr($item_id, $name) {
     global $wpdb;
     $botattributes_table = $wpdb->prefix . 'scrapyard_botattributes';
@@ -89,6 +120,11 @@ function scrapyard_delete_attr($item_id, $name) {
     $wpdb->query("DELETE FROM $botattributes_table WHERE (item_id=$item_id AND name='$name')");
 }
 
+/**
+ * Get all the types user's have given their bot so far (Vertical Spinner, Horizontal Spinner, etc).
+ * 
+ * @return Array Array of bot types
+ */
 function scrapyard_get_types() {
     global $wpdb;
     $botattributes_table = $wpdb->prefix . 'scrapyard_botattributes';
@@ -101,6 +137,13 @@ function scrapyard_get_types() {
     return array_map("objToStr", $types);
 }
 
+/**
+ * Insert new image for bot.
+ * 
+ * @param Integer $item_id The id of the bot the attribute belongs to
+ * @param Integer $image_id The wordpress gallery image id of the image
+ * @return Integer The MYSQL id of the image
+ */
 function scrapyard_insert_img($item_id, $image_id) {
     global $wpdb;
     $botimages_table = $wpdb->prefix . 'scrapyard_botimages';
@@ -119,6 +162,12 @@ function scrapyard_insert_img($item_id, $image_id) {
 
     return $wpdb->insert_id;
 }
+
+/**
+ * Delete image from bot.
+ * 
+ * @param Integer $id The MYSQL id of the image (I don't know why I did it this way but it's working so far)
+ */
 function scrapyard_delete_img($id) {
     global $wpdb;
     $botimages_table = $wpdb->prefix . 'scrapyard_botimages';
@@ -127,6 +176,14 @@ function scrapyard_delete_img($id) {
         'id' => $id
     ));
 }
+
+/**
+ * Reorder Images.
+ * 
+ * @param Integer $item_id The id of the bot the attribute belongs to
+ * @param Integer $from The previous index of the image
+ * @param Integer $to The new index of the image relative to the old order
+ */
 function scrapyard_reorder_img($item_id, $from, $to) {
     // ATTENTION!!!!!
     // $to is relative to the old table
@@ -157,6 +214,12 @@ function scrapyard_reorder_img($item_id, $from, $to) {
     ));
 }
 
+/**
+ * Get Bot/item.
+ * 
+ * @param Integer $item_id The id of the bot the attribute belongs to
+ * @return Array The All the bots attributes with the images at ->images and attributes at ->attributes
+ */
 function scrapyard_get_item($item_id) {
     global $wpdb;
 	$bots_table = $wpdb->prefix . 'scrapyard_bots';
@@ -173,6 +236,12 @@ function scrapyard_get_item($item_id) {
 
     return $bot;
 }
+
+/**
+ * Get the item_id for all bots in the database.
+ * 
+ * @return Array the item_ids of all bots
+ */
 function scrapyard_get_item_ids() {
     global $wpdb;
     $bots_table = $wpdb->prefix . 'scrapyard_bots';
@@ -182,54 +251,5 @@ function scrapyard_get_item_ids() {
         array_push($out, $val->item_id);
     }
     return $out;
-}
-
-global $scrapyard_db_version;
-$scrapyard_db_version = '1.0';
-
-function scrapyard_install() {
-    global $wpdb;
-    global $scrapyard_db_version;
-
-	$bots_table_name = $wpdb->prefix . 'scrapyard_bots';
-	$botimages_table_name = $wpdb->prefix . 'scrapyard_botimages';
-	$botattributes_table_name = $wpdb->prefix . 'scrapyard_botattributes';
-	
-	$charset_collate = $wpdb->get_charset_collate();
-	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-
-	$sql = "CREATE TABLE IF NOT EXISTS $bots_table_name (
-		id mediumint(9) NOT NULL AUTO_INCREMENT,
-		name text NOT NULL,
-		description text NOT NULL,
-        item_id bigint(9) NOT NULL,
-        extra_html text,
-		PRIMARY KEY  (id)
-	) $charset_collate;";
-
-    dbDelta( $sql );
-    
-	$sql = "CREATE TABLE IF NOT EXISTS $botimages_table_name (
-		id mediumint(9) NOT NULL AUTO_INCREMENT,
-        image_id bigint(9) NOT NULL,
-        pos float(53) NOT NULL,
-        item_id bigint(9) NOT NULL,
-		PRIMARY KEY  (id)
-	) $charset_collate;";
-
-    dbDelta( $sql );
-    
-	$sql = "CREATE TABLE IF NOT EXISTS $botattributes_table_name (
-		id mediumint(9) NOT NULL AUTO_INCREMENT,
-        name text NOT NULL,
-        value text NOT NULL,
-        item_id bigint(9) NOT NULL,
-		PRIMARY KEY  (id)
-	) $charset_collate;";
-
-    dbDelta( $sql );
-    
-    add_option( 'scrapyard_db_version', $scrapyard_db_version );
-    add_option('scrapyard_item_counter', 0);
 }
 ?>

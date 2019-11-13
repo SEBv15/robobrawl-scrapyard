@@ -1,7 +1,7 @@
 <?php 
 
 global $scrapyard_bot_title;
-$scrapyard_bot_title = "T";
+$scrapyard_bot_title = "";
 
 // Get the bot name
 if(isset($_GET["bot_id"])) {

@@ -2,8 +2,6 @@
 global $scrapyard_db_version;
 $scrapyard_db_version = '1.0';
 
-register_activation_hook( __FILE__, 'scrapyard_install' );
-
 /**
  * Create database tables for the plugin if they don't exist yet.
  */
@@ -51,7 +49,7 @@ function scrapyard_install() {
     
     add_option( 'scrapyard_db_version', $scrapyard_db_version );
     // Counter to for new item_id
-    if (get_option('scrapyard_item_counter') == null) {
+    if (!get_option('scrapyard_item_counter')) {
         add_option('scrapyard_item_counter', 0);
     }
 }

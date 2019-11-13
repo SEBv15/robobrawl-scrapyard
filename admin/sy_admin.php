@@ -19,6 +19,10 @@ function register_scrapyard_settings_page() {
 }
 
 function scrapyard_settings_page_callback() {
+	if(isset($_GET["sy_documentation"])) {
+		echo include("documentation.php");
+		return;
+	}
 
 	// Save attachment ID
 	/*if ( isset( $_POST['submit_image_selector'] ) && isset( $_POST['image_attachment_id'] ) ) :
@@ -63,6 +67,7 @@ function scrapyard_settings_page_callback() {
 	if(!isset($_GET["sy_item_id"])) {
 		?>
 		<h1>Scrapyard</h1>
+		<a href="?page=scrapyard&sy_documentation">Documentation</a>
 		<p>Click to edit</p>
 		<?php
 

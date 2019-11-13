@@ -1,13 +1,14 @@
 <?php
 /**
  * Plugin Name: Scrapyard
- * Description: Dead Robots!
+ * Description: Easily manageable scrapyards.
  * Version: 1.0
  * Author: Sebastian Strempfer
  */
 
 // Create Database table if they don't exist yet on plugin activation
 include_once("install_db.php");
+register_activation_hook( __FILE__, 'scrapyard_install' );
 
 include_once("shortcodes.php");
 include_once("admin/sy_admin.php");
